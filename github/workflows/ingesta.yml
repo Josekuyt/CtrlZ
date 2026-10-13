@@ -1,24 +1,30 @@
-# CtrlZ · ingesta de fuentes (PLANTILLA — fase de administración, aún no activa).
-# Solo se ejecuta manualmente (workflow_dispatch). Cuando montemos Supabase,
-# aquí haremos: snapshot de una URL + extracción de texto -> guardar en Supabase.
+# CtrlZ · Ingesta de fuentes.
+# Extrae el texto de las fuentes "pendiente" con URL (web/snapshot/pdf) y lo
+# guarda en Supabase. Se lanza a mano desde la pestaña "Actions" (Run workflow).
+# Necesita 2 secretos del repo: SUPABASE_URL y SUPABASE_SERVICE_ROLE_KEY.
 
 name: Ingesta de fuentes
 
 on:
-  workflow_dispatch:
-    inputs:
-      url:
-        description: 'URL de la fuente a procesar'
-        required: false
+  workflow_dispatch:          # botón "Run workflow" en la pestaña Actions
+  # schedule:
+  #   - cron: '0 6 * * *'     # (opcional) cada día a las 06:00 UTC
 
 jobs:
   ingesta:
     runs-on: ubuntu-latest
     steps:
-      - name: Pendiente de implementar
-        run: |
-          echo "Plantilla de ingesta. Pasos previstos cuando esté Supabase:"
-          echo "1) Descargar/renderizar la URL (Playwright) o leer el PDF/texto."
-          echo "2) Extraer el texto limpio."
-          echo "3) Guardar texto + metadatos en Supabase (sin binarios pesados)."
-          echo "URL recibida: ${{ github.event.inputs.url }}"
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Instalar dependencias
+        run: npm install --no-save @supabase/supabase-js jsdom @mozilla/readability unpdf
+
+      - name: Ejecutar ingesta
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+        run: node scripts/ingesta.mjs
