@@ -1,29 +1,31 @@
--- CtrlZ · esquema de referencia para el panel de administración e ingesta de fuentes.
--- NO se usa en el MVP (el sitio público es estático). Se aplicará en Supabase
--- cuando montemos el panel. Guardamos TEXTO + metadatos + enlace, nunca binarios pesados.
+-- CtrlZ · esquema del panel de administración e ingesta de fuentes (Supabase).
+-- Ejecútalo en el SQL Editor de Supabase. Guardamos TEXTO + metadatos + enlace,
+-- nunca binarios pesados (así todo cabe en el plan gratuito).
 
-create table if not exists fuentes (
-  id      text primary key,
-  tipo    text not null,          -- web | snapshot | pdf | texto
-  titulo  text not null,
-  url     text,
-  texto   text not null,          -- texto extraído (lo que se indexa)
-  fecha   timestamptz default now(),
-  estado  text not null default 'pendiente'  -- pendiente | procesada | revisada
+create table if not exists public.fuentes (
+  id         uuid primary key default gen_random_uuid(),
+  tipo       text not null check (tipo in ('web','snapshot','pdf','texto')),
+  titulo     text not null,
+  url        text,
+  texto      text not null default '',
+  conceptos  text[] not null default '{}',   -- slugs de conceptos que respalda
+  etiquetas  text[] not null default '{}',
+  estado     text not null default 'pendiente'
+             check (estado in ('pendiente','procesada','revisada')),
+  created_by uuid references auth.users(id) default auth.uid(),
+  created_at timestamptz not null default now()
 );
 
-create table if not exists conceptos (
-  id          text primary key,   -- slug
-  nombre      text not null,
-  definicion  text not null,
-  explicacion text,
-  categoria   text not null,
-  disciplina  text not null default 'editorial',
-  nivel       text not null default 'basico'
-);
+alter table public.fuentes enable row level security;
 
-create table if not exists concepto_fuente (
-  concepto_id text not null references conceptos(id),
-  fuente_id   text not null references fuentes(id),
-  primary key (concepto_id, fuente_id)
-);
+-- Solo usuarios autenticados pueden leer y escribir; el público (anon) no.
+create policy "fuentes_select_auth" on public.fuentes
+  for select to authenticated using (true);
+create policy "fuentes_insert_auth" on public.fuentes
+  for insert to authenticated with check (true);
+create policy "fuentes_update_auth" on public.fuentes
+  for update to authenticated using (true) with check (true);
+create policy "fuentes_delete_auth" on public.fuentes
+  for delete to authenticated using (true);
+
+grant select, insert, update, delete on public.fuentes to authenticated;
