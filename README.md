@@ -93,16 +93,37 @@ content/editorial/      Fichas de concepto (MDX) — el contenido
 public/search/          Índice generado en el build (no se edita a mano)
 scripts/build-index.ts  Genera el índice de búsqueda
 src/lib/                schema (Zod), carga de fichas, grafo de relaciones, búsqueda
-src/components/         Buscador, ficha, relaciones
-src/app/                Páginas (home, buscar, diccionario, ficha, disciplina)
-supabase/               Esquema de referencia para la futura ingesta de fuentes
-.github/workflows/      Plantilla de ingesta (fase de administración, aún no activa)
+src/components/         Buscador, ficha, relaciones, panel admin
+src/app/                Páginas (home, buscar, diccionario, ficha, disciplina, admin)
+src/lib/supabase.ts     Cliente de Supabase (panel /admin)
+supabase/schema.sql     Tabla `fuentes` + políticas de seguridad (RLS)
+.github/workflows/      Plantilla de ingesta (aún no activa)
 ```
 
-## 7. Próximas fases (no incluidas en el MVP)
+## 7. Panel de administración (`/admin`) + Supabase
 
-- **Panel de administración + ingesta de fuentes** (URL, snapshot, PDF, texto) sobre
-  **Supabase** (auth + BD + almacenamiento) y **GitHub Actions** para el procesado.
+El panel para dar de alta **fuentes** vive en `/admin` y funciona en el navegador con
+**Supabase Auth** (login por email/contraseña). Las reglas de seguridad (RLS) de
+Supabase garantizan que solo un usuario autenticado puede leer/escribir. El sitio
+público sigue siendo estático.
+
+**Puesta en marcha:**
+
+1. En Supabase, ejecuta `supabase/schema.sql` (SQL Editor) para crear la tabla
+   `fuentes` con su RLS, crea tu usuario (Authentication → Users → Add user, con
+   *Auto Confirm*) y desactiva los registros públicos.
+2. Copia `.env.example` a `.env.local` y rellena `NEXT_PUBLIC_SUPABASE_URL` y
+   `NEXT_PUBLIC_SUPABASE_ANON_KEY` (Supabase → Project Settings → API).
+3. En **Netlify**, añade esas dos variables en *Site settings → Environment variables*
+   y vuelve a desplegar (las variables `NEXT_PUBLIC_*` se incrustan en el *build*).
+4. Entra en `/admin`, inicia sesión y da de alta fuentes. De momento el **texto** de
+   cada fuente se pega a mano; la extracción automática (snapshot de URL, texto de PDF)
+   llegará con la GitHub Action de ingesta.
+
+## 8. Próximas fases
+
+- **Ingesta automática de fuentes** (GitHub Actions: snapshot de URL + extracción de
+  texto de PDF → Supabase).
 - **Búsqueda semántica** con *embeddings* precalculados.
 - **IA local** (Ollama) para explicar y resumir sobre la base de conocimiento.
 
