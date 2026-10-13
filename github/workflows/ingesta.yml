@@ -1,0 +1,24 @@
+# CtrlZ · ingesta de fuentes (PLANTILLA — fase de administración, aún no activa).
+# Solo se ejecuta manualmente (workflow_dispatch). Cuando montemos Supabase,
+# aquí haremos: snapshot de una URL + extracción de texto -> guardar en Supabase.
+
+name: Ingesta de fuentes
+
+on:
+  workflow_dispatch:
+    inputs:
+      url:
+        description: 'URL de la fuente a procesar'
+        required: false
+
+jobs:
+  ingesta:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Pendiente de implementar
+        run: |
+          echo "Plantilla de ingesta. Pasos previstos cuando esté Supabase:"
+          echo "1) Descargar/renderizar la URL (Playwright) o leer el PDF/texto."
+          echo "2) Extraer el texto limpio."
+          echo "3) Guardar texto + metadatos en Supabase (sin binarios pesados)."
+          echo "URL recibida: ${{ github.event.inputs.url }}"
