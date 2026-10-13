@@ -1,0 +1,23 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --tinta: #101418;
+  --papel: #ffffff;
+  --acento: #2f6df6;
+}
+
+html {
+  color-scheme: light;
+}
+
+body {
+  background: var(--papel);
+  color: var(--tinta);
+  -webkit-font-smoothing: antialiased;
+}
+
+a {
+  color: inherit;
+}
