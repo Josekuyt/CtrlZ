@@ -3,7 +3,7 @@ import { join } from 'node:path';
 import matter from 'gray-matter';
 import { Concepto, ConceptoFrontmatter } from './schema';
 
-const CONTENT_DIR = join(process.cwd(), 'content');
+const CONTENT_DIR = join(process.cwd(), 'content', 'glosario');
 
 /**
  * Carga todas las fichas desde /content/<disciplina>/*.mdx,

@@ -21,7 +21,7 @@ Divide la página en columnas verticales. Es flexible y muy común en revistas y
 
 ### Retícula modular
 
-Añade filas a las columnas, creando una malla de [módulos](/editorial/reticula-modular/). Es ideal cuando conviven muchos tipos de elemento (texto, fotos, tablas, publicidad), como en un periódico.
+Añade filas a las columnas, creando una malla de [módulos](/glosario/editorial/reticula-modular/). Es ideal cuando conviven muchos tipos de elemento (texto, fotos, tablas, publicidad), como en un periódico.
 
 ### Retícula jerárquica
 

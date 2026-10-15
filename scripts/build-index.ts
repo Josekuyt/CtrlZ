@@ -24,7 +24,7 @@ function main() {
       consultas: c.consultas,
       sinonimos: c.sinonimos,
       contexto: c.categoria,
-      url: `/${c.disciplina}/${c.id}/`,
+      url: `/glosario/${c.disciplina}/${c.id}/`,
     });
   }
 

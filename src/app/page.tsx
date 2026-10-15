@@ -38,8 +38,8 @@ export default function Home() {
 
       <p className="text-sm text-black/50">
         ¿Prefieres explorar?{' '}
-        <Link href="/diccionario" className="text-acento underline underline-offset-2">
-          Ver el diccionario completo
+        <Link href="/glosario" className="text-acento underline underline-offset-2">
+          Ver el glosario completo
         </Link>
       </p>
     </div>

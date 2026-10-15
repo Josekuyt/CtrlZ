@@ -1,0 +1,23 @@
+# dependencias
+/node_modules
+
+# builds
+/.next
+/out
+
+# índice generado (se reconstruye en cada build)
+/public/search/concepts.json
+
+# entorno
+.env
+.env.local
+.env*.local
+
+# sistema
+.DS_Store
+*.log
+npm-debug.log*
+
+# editor
+.vscode
+.idea

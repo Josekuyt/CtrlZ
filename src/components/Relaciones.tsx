@@ -46,7 +46,7 @@ export default function Relaciones({
               {porTipo.get(t)!.map((d) => (
                 <Link
                   key={d.id}
-                  href={`/${d.disciplina}/${d.id}/`}
+                  href={`/glosario/${d.disciplina}/${d.id}/`}
                   className="rounded-full border border-black/15 px-3 py-0.5 text-sm hover:border-acento hover:text-acento"
                 >
                   {d.nombre}

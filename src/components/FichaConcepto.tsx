@@ -12,7 +12,14 @@ export default function FichaConcepto({
   return (
     <article>
       <nav className="text-sm text-black/40 mb-4">
-        <Link href={`/${concepto.disciplina}/`} className="hover:text-acento capitalize">
+        <Link href="/glosario/" className="hover:text-acento">
+          Glosario
+        </Link>
+        <span className="mx-2">›</span>
+        <Link
+          href={`/glosario/${concepto.disciplina}/`}
+          className="hover:text-acento capitalize"
+        >
           {concepto.disciplina}
         </Link>
         <span className="mx-2">›</span>
