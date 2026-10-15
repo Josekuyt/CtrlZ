@@ -1,0 +1,111 @@
+# CtrlZ · configuración del panel (Sveltia CMS).
+# Guarda el contenido como archivos en GitHub. De momento: el Glosario.
+
+backend:
+  name: github
+  repo: Josekuyt/CtrlZ
+  branch: main
+
+# Mensaje de los "commits" que crea el panel al guardar.
+commit_messages:
+  create: 'Panel: nuevo {{collection}} “{{slug}}”'
+  update: 'Panel: edita {{collection}} “{{slug}}”'
+  delete: 'Panel: borra {{collection}} “{{slug}}”'
+
+# Carpeta para imágenes (aún no se usa; preparada por si acaso).
+media_folder: public/media
+public_folder: /media
+
+collections:
+  - name: glosario
+    label: Glosario · Diseño Editorial
+    label_singular: Término
+    description: Términos del glosario. El identificador es la URL del término.
+    folder: content/glosario/editorial
+    extension: mdx
+    format: frontmatter
+    create: true
+    slug: '{{fields.id}}'
+    identifier_field: nombre
+    summary: '{{fields.nombre}}'
+    sortable_fields: [nombre, categoria, nivel]
+    fields:
+      - label: Identificador (URL, p. ej. medianil)
+        name: id
+        widget: string
+        hint: Solo minúsculas, números y guiones. Es la dirección del término.
+        pattern: ['^[a-z0-9-]+$', 'Usa solo minúsculas, números y guiones']
+      - label: Nombre
+        name: nombre
+        widget: string
+      - label: Definición (1-2 frases)
+        name: definicion
+        widget: text
+      - label: Categoría
+        name: categoria
+        widget: string
+        hint: 'p. ej. reticula, tipografia, composicion…'
+      - label: Nivel
+        name: nivel
+        widget: select
+        options: [basico, intermedio, avanzado]
+        default: basico
+      - label: Sinónimos
+        name: sinonimos
+        widget: list
+        required: false
+        default: []
+      - label: Consultas (frases con las que la gente lo busca)
+        name: consultas
+        widget: list
+        required: false
+        default: []
+      - label: Etiquetas
+        name: etiquetas
+        widget: list
+        required: false
+        default: []
+      - label: Relaciones con otros términos
+        name: relaciones
+        widget: list
+        required: false
+        summary: '{{fields.tipo}} → {{fields.destino}}'
+        fields:
+          - label: Tipo
+            name: tipo
+            widget: select
+            options:
+              - es_un
+              - tiene_tipo
+              - parte_de
+              - tiene_parte
+              - relacionado_con
+              - se_confunde_con
+              - sinonimo_de
+              - ver_tambien
+          - label: Destino (identificador del otro término)
+            name: destino
+            widget: string
+      - label: Ejemplos de uso
+        name: ejemplos
+        widget: list
+        required: false
+        default: []
+      - label: Referencias (bibliografía)
+        name: referencias
+        widget: list
+        required: false
+        summary: '{{fields.titulo}}'
+        fields:
+          - { label: Título, name: titulo, widget: string }
+          - { label: Autor, name: autor, widget: string, required: false }
+          - { label: Año, name: anio, widget: number, required: false, value_type: int }
+          - { label: Enlace, name: url, widget: string, required: false }
+      - label: Enlace al apartado del temario (opcional)
+        name: temario
+        widget: string
+        required: false
+        hint: 'p. ej. /temario/editorial/reticula/partes/'
+      - label: Explicación ampliada
+        name: body
+        widget: markdown
