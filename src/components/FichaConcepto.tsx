@@ -29,6 +29,17 @@ export default function FichaConcepto({
 
       <p className="mt-4 text-lg">{concepto.definicion}</p>
 
+      {concepto.temario && (
+        <p className="mt-3">
+          <Link
+            href={concepto.temario}
+            className="inline-flex items-center gap-1 text-acento font-medium hover:underline"
+          >
+            Explicado en el temario →
+          </Link>
+        </p>
+      )}
+
       {concepto.explicacion && (
         <div className="mt-4 whitespace-pre-line leading-relaxed text-black/80">
           {concepto.explicacion}

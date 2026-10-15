@@ -47,6 +47,8 @@ export const ConceptoFrontmatter = z.object({
   relaciones: z.array(Relacion).default([]),
   ejemplos: z.array(z.string()).default([]),
   referencias: z.array(Referencia).default([]),
+  // Enlace opcional al apartado del temario que lo explica a fondo.
+  temario: z.string().optional(),
 });
 
 /** Concepto completo: frontmatter + explicación (cuerpo MDX en texto). */

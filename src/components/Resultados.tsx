@@ -46,19 +46,16 @@ export default function Resultados() {
       <ul className="flex flex-col divide-y divide-black/10">
         {hits.map((h) => (
           <li key={h.id} className="py-4">
-            <Link
-              href={`/${h.disciplina}/${h.id}/`}
-              className="group block"
-            >
+            <Link href={h.url} className="group block">
               <div className="flex items-baseline justify-between gap-4">
                 <span className="text-lg font-medium group-hover:text-acento">
-                  {h.nombre}
+                  {h.titulo}
                 </span>
                 <span className="shrink-0 text-xs uppercase tracking-wide text-black/40">
-                  {h.categoria}
+                  {h.tipo} · {h.contexto}
                 </span>
               </div>
-              <p className="mt-1 text-black/60">{h.definicion}</p>
+              <p className="mt-1 text-black/60">{h.resumen}</p>
             </Link>
           </li>
         ))}

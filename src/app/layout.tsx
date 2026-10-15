@@ -26,7 +26,8 @@ export default function RootLayout({
             </Link>
             <nav className="flex gap-5 text-sm">
               <Link href="/buscar" className="hover:text-acento">Buscar</Link>
-              <Link href="/diccionario" className="hover:text-acento">Diccionario</Link>
+              <Link href="/temario" className="hover:text-acento">Temario</Link>
+              <Link href="/diccionario" className="hover:text-acento">Glosario</Link>
             </nav>
           </div>
         </header>
