@@ -5,6 +5,7 @@ import { marked } from 'marked';
 import { cache } from 'react';
 
 const DIR = join(process.cwd(), 'content', 'temario');
+const INDEX = '_index.md';
 
 /** Nombres legibles de cada disciplina (el slug es la carpeta/ruta). */
 export const NOMBRE_DISCIPLINA: Record<string, string> = {
@@ -59,27 +60,32 @@ function aTextoPlano(md: string): string {
     .trim();
 }
 
-function cargarCapitulo(disciplina: string, capSlug: string, capDir: string): Capitulo {
-  const files = readdirSync(capDir);
-  const metaRaw = files.includes('_capitulo.md')
-    ? readFileSync(join(capDir, '_capitulo.md'), 'utf8')
-    : '';
-  const meta = matter(metaRaw);
+/** Lee el _index.md de una carpeta (entrada del temario). */
+function leerEntrada(dir: string): matter.GrayMatterFile<string> | null {
+  const f = join(dir, INDEX);
+  if (!existsSync(f)) return null;
+  return matter(readFileSync(f, 'utf8'));
+}
+
+function cargarCapitulo(disciplina: string, capSlug: string, capDir: string): Capitulo | null {
+  const cap = leerEntrada(capDir);
+  if (!cap) return null;
 
   const apartados: Apartado[] = [];
-  for (const f of files.filter((f) => /^\d+-.+\.md$/.test(f))) {
-    const m = f.match(/^(\d+)-(.+)\.md$/)!;
-    const raw = readFileSync(join(capDir, f), 'utf8');
-    const { data, content } = matter(raw);
+  for (const apSlug of readdirSync(capDir)) {
+    const apDir = join(capDir, apSlug);
+    if (!esDir(apDir)) continue;
+    const ap = leerEntrada(apDir);
+    if (!ap) continue;
     apartados.push({
       disciplina,
       capitulo: capSlug,
-      slug: m[2],
-      orden: Number(data.orden ?? m[1]),
-      titulo: String(data.titulo ?? m[2]),
-      consultas: Array.isArray(data.consultas) ? data.consultas : [],
-      html: marked.parse(content) as string,
-      texto: aTextoPlano(content),
+      slug: apSlug,
+      orden: Number(ap.data.orden ?? 99),
+      titulo: String(ap.data.titulo ?? apSlug),
+      consultas: Array.isArray(ap.data.consultas) ? ap.data.consultas : [],
+      html: marked.parse(ap.content) as string,
+      texto: aTextoPlano(ap.content),
     });
   }
   apartados.sort((a, b) => a.orden - b.orden);
@@ -87,10 +93,10 @@ function cargarCapitulo(disciplina: string, capSlug: string, capDir: string): Ca
   return {
     disciplina,
     slug: capSlug,
-    titulo: String(meta.data.titulo ?? capSlug),
-    orden: Number(meta.data.orden ?? 99),
-    descripcion: String(meta.data.descripcion ?? ''),
-    intro: meta.content.trim() ? (marked.parse(meta.content) as string) : '',
+    titulo: String(cap.data.titulo ?? capSlug),
+    orden: Number(cap.data.orden ?? 99),
+    descripcion: String(cap.data.descripcion ?? ''),
+    intro: cap.content.trim() ? (marked.parse(cap.content) as string) : '',
     apartados,
   };
 }
@@ -108,7 +114,8 @@ export const cargarTemario = cache((): DisciplinaTemario[] => {
     for (const capSlug of readdirSync(discDir)) {
       const capDir = join(discDir, capSlug);
       if (!esDir(capDir)) continue;
-      capitulos.push(cargarCapitulo(discSlug, capSlug, capDir));
+      const cap = cargarCapitulo(discSlug, capSlug, capDir);
+      if (cap) capitulos.push(cap);
     }
     capitulos.sort((a, b) => a.orden - b.orden);
 

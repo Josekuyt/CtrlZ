@@ -17,6 +17,51 @@ media_folder: public/media
 public_folder: /media
 
 collections:
+  # ---- Temario: capítulos y apartados (árbol anidado) ----
+  - name: temario
+    label: Temario · Diseño Editorial
+    label_singular: Entrada del temario
+    description: >-
+      Capítulos y apartados. Cada carpeta es una entrada; un capítulo contiene
+      apartados dentro. "Orden" coloca cada uno; "Descripción" es para capítulos
+      y "Consultas" para apartados.
+    folder: content/temario/editorial
+    extension: md
+    format: frontmatter
+    create: true
+    path: '{{slug}}/_index'
+    nested:
+      depth: 3
+      summary: '{{titulo}}'
+      subfolders: true
+    meta:
+      path:
+        index_file: _index
+    identifier_field: titulo
+    summary: '{{titulo}}'
+    fields:
+      - label: Título
+        name: titulo
+        widget: string
+      - label: Orden (número; coloca el capítulo o apartado)
+        name: orden
+        widget: number
+        value_type: int
+        default: 1
+      - label: Descripción (solo capítulos)
+        name: descripcion
+        widget: text
+        required: false
+      - label: Consultas (solo apartados; frases de búsqueda)
+        name: consultas
+        widget: list
+        required: false
+        default: []
+      - label: Contenido
+        name: body
+        widget: markdown
+
+  # ---- Glosario: términos (carpeta plana) ----
   - name: glosario
     label: Glosario · Diseño Editorial
     label_singular: Término
