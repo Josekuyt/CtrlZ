@@ -6,16 +6,43 @@ export interface DocBusqueda {
   id: string;
   tipo: 'Glosario' | 'Temario';
   titulo: string;
-  resumen: string; // definición (glosario) o capítulo (temario)
+  resumen: string;
   texto: string;
   consultas: string[];
   sinonimos: string[];
-  contexto: string; // categoría o capítulo
+  contexto: string;
   url: string;
 }
 
 export interface Resultado extends DocBusqueda {
   score: number;
+}
+
+// Palabras vacías y de pregunta: se quitan de la consulta para reducir ruido.
+const VACIAS = new Set([
+  'que', 'qué', 'como', 'cómo', 'cual', 'cuál', 'cuáles', 'se', 'para', 'por',
+  'de', 'del', 'la', 'el', 'los', 'las', 'un', 'una', 'unos', 'unas', 'y', 'o',
+  'u', 'en', 'hay', 'es', 'son', 'al', 'lo', 'me', 'mi', 'tu', 'su', 'le',
+  'donde', 'dónde',
+]);
+
+function tokeniza(q: string): string[] {
+  return q
+    .toLowerCase()
+    .split(/\s+/)
+    .map((w) => w.replace(/[¿?¡!.,;:()"']/g, ''))
+    .filter(Boolean);
+}
+
+/** Limpia la consulta quitando palabras vacías (sin romperla si solo había esas). */
+export function limpiarConsulta(q: string): string {
+  const t = tokeniza(q).filter((w) => !VACIAS.has(w));
+  return t.length ? t.join(' ') : q.trim();
+}
+
+/** Tokens significativos de la consulta (para resaltar en los resultados). */
+export function tokensConsulta(q: string): string[] {
+  return tokeniza(q).filter((w) => !VACIAS.has(w) && w.length >= 3);
 }
 
 const esquema = {
@@ -33,7 +60,6 @@ let dbPromise: ReturnType<typeof construir> | null = null;
 async function construir() {
   const res = await fetch('/search/concepts.json');
   const docs: DocBusqueda[] = await res.json();
-
   const db = await create({
     schema: esquema,
     components: { tokenizer: { language, stemming: true, stemmer } },
@@ -48,7 +74,7 @@ export function indice() {
 }
 
 export async function buscar(termino: string, limite = 20): Promise<Resultado[]> {
-  const q = termino.trim();
+  const q = limpiarConsulta(termino);
   const { db, docs } = await indice();
   if (!q) return [];
 
@@ -56,7 +82,7 @@ export async function buscar(termino: string, limite = 20): Promise<Resultado[]>
   const res = await search(db, {
     term: q,
     properties: ['titulo', 'consultas', 'sinonimos', 'resumen', 'texto'],
-    boost: { titulo: 3, consultas: 2, sinonimos: 2 },
+    boost: { titulo: 3, consultas: 4, sinonimos: 2, resumen: 1, texto: 1 },
     tolerance: 1,
     limit: limite,
   });

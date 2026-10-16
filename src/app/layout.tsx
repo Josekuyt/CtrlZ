@@ -1,5 +1,7 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
+import Logo from '@/components/Logo';
+import BuscadorCabecera from '@/components/BuscadorCabecera';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -20,12 +22,18 @@ export default function RootLayout({
     <html lang="es">
       <body className="min-h-screen flex flex-col">
         <header className="border-b border-black/10">
-          <div className="mx-auto max-w-4xl px-4 h-14 flex items-center justify-between">
-            <Link href="/" className="font-semibold tracking-tight text-lg">
-              Ctrl<span className="text-acento">Z</span>
-            </Link>
-            <nav className="flex gap-5 text-sm">
-              <Link href="/buscar" className="hover:text-acento">Buscar</Link>
+          <div className="mx-auto max-w-4xl px-4 h-14 flex items-center justify-between gap-4">
+            <div className="flex items-center gap-5">
+              <Logo />
+              <Link
+                href="/sobre"
+                className="text-sm text-black/60 hover:text-acento"
+              >
+                Sobre CtrlZ
+              </Link>
+            </div>
+            <nav className="flex items-center gap-5 text-sm">
+              <BuscadorCabecera />
               <Link href="/temario" className="hover:text-acento">Temario</Link>
               <Link href="/glosario" className="hover:text-acento">Glosario</Link>
             </nav>
