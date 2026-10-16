@@ -3,6 +3,7 @@ import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
 import { obtenerGrafo, obtenerDisciplinas } from '@/lib/datos';
 import { nombreDisciplina } from '@/lib/temario';
+import { etiquetaCategoria } from '@/lib/etiquetas';
 import type { Concepto } from '@/lib/schema';
 
 type Params = { disciplina: string };
@@ -54,9 +55,9 @@ export default async function GlosarioDisciplinaPage({
         {[...porCategoria.entries()]
           .sort((a, b) => a[0].localeCompare(b[0], 'es'))
           .map(([categoria, lista]) => (
-            <section key={categoria}>
-              <h2 className="text-sm font-semibold uppercase tracking-wide text-black/40 capitalize">
-                {categoria}
+            <section key={categoria} id={categoria} className="scroll-mt-20">
+              <h2 className="text-sm font-semibold uppercase tracking-wide text-black/40">
+                {etiquetaCategoria(categoria)}
               </h2>
               <ul className="mt-2 flex flex-col gap-1">
                 {lista

@@ -1,6 +1,6 @@
 import type { Metadata } from 'next';
 import { notFound } from 'next/navigation';
-import { obtenerGrafo } from '@/lib/datos';
+import { obtenerGrafo, obtenerTodos } from '@/lib/datos';
 import FichaConcepto from '@/components/FichaConcepto';
 
 type Params = { disciplina: string; slug: string };
@@ -33,5 +33,30 @@ export default async function TerminoPage({
   const concepto = grafo.get(slug);
   if (!concepto) notFound();
 
-  return <FichaConcepto concepto={concepto} grafo={grafo} />;
+  // Vecinos en el orden alfabético global del glosario.
+  const todos = obtenerTodos();
+  const i = todos.findIndex((c) => c.id === slug);
+  const anterior = i > 0 ? todos[i - 1] : undefined;
+  const siguiente = i >= 0 && i < todos.length - 1 ? todos[i + 1] : undefined;
+
+  return (
+    <FichaConcepto
+      concepto={concepto}
+      grafo={grafo}
+      anterior={
+        anterior && {
+          id: anterior.id,
+          nombre: anterior.nombre,
+          disciplina: anterior.disciplina,
+        }
+      }
+      siguiente={
+        siguiente && {
+          id: siguiente.id,
+          nombre: siguiente.nombre,
+          disciplina: siguiente.disciplina,
+        }
+      }
+    />
+  );
 }

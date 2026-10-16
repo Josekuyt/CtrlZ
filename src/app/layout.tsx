@@ -43,8 +43,16 @@ export default function RootLayout({
         <main className="flex-1 mx-auto w-full max-w-4xl px-4 py-10">{children}</main>
 
         <footer className="border-t border-black/10">
-          <div className="mx-auto max-w-4xl px-4 py-6 text-sm text-black/50">
-            CtrlZ · plataforma de conocimiento de diseño · MVP: Diseño Editorial
+          <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-2 px-4 py-6 text-sm text-black/50">
+            <span>CtrlZ · plataforma de conocimiento de diseño · MVP: Diseño Editorial</span>
+            <a
+              href="https://github.com/Josekuyt/CtrlZ/issues/new?title=Sugerencia&body=Cu%C3%A9ntanos%20qu%C3%A9%20t%C3%A9rmino%20falta%20o%20qu%C3%A9%20mejorar%C3%ADas%3A%0A%0A"
+              target="_blank"
+              rel="noreferrer"
+              className="underline hover:text-acento"
+            >
+              Sugerir un término o mejora
+            </a>
           </div>
         </footer>
       </body>

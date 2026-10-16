@@ -3,6 +3,7 @@
 import { useMemo, useState } from 'react';
 import Link from 'next/link';
 import Resaltar from './Resaltar';
+import { etiquetaCategoria, etiquetaNivel, ORDEN_NIVEL } from '@/lib/etiquetas';
 
 export type ItemGlosario = {
   id: string;
@@ -14,28 +15,6 @@ export type ItemGlosario = {
   sinonimos: string[];
   consultas: string[];
 };
-
-const ETIQUETA_NIVEL: Record<string, string> = {
-  basico: 'Básico',
-  intermedio: 'Intermedio',
-  avanzado: 'Avanzado',
-};
-const ORDEN_NIVEL = ['basico', 'intermedio', 'avanzado'];
-
-const ETIQUETA_CATEGORIA: Record<string, string> = {
-  reticula: 'Retícula',
-  tipografia: 'Tipografía',
-  maquetacion: 'Maquetación',
-  composicion: 'Composición',
-  'publicaciones-periodicas': 'Publicaciones periódicas',
-};
-
-function etiquetaCategoria(cat: string): string {
-  return (
-    ETIQUETA_CATEGORIA[cat] ??
-    cat.replace(/-/g, ' ').replace(/^./, (m) => m.toUpperCase())
-  );
-}
 
 /** minúsculas + sin acentos, para comparar de forma tolerante. */
 function norm(s: string): string {
@@ -181,7 +160,7 @@ export default function VistaGlosario({ items }: { items: ItemGlosario[] }) {
               aria-pressed={niveles.has(niv)}
               className={`${chipBase} ${niveles.has(niv) ? chipOn : chipOff}`}
             >
-              {ETIQUETA_NIVEL[niv] ?? niv} <span className="opacity-50">{n}</span>
+              {etiquetaNivel(niv)} <span className="opacity-50">{n}</span>
             </button>
           ))}
         </div>

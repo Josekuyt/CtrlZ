@@ -8,6 +8,8 @@ import {
   nombreDisciplina,
 } from '@/lib/temario';
 import RailCapitulo from '@/components/RailCapitulo';
+import TerminosApartado from '@/components/TerminosApartado';
+import { terminosPorApartado } from '@/lib/datos';
 
 type Params = { disciplina: string; capitulo: string };
 
@@ -47,6 +49,7 @@ export default async function CapituloPage({
   const siguiente = d.capitulos[i + 1];
 
   const secciones = cap.apartados.map((a) => ({ slug: a.slug, titulo: a.titulo }));
+  const terminos = terminosPorApartado();
 
   return (
     <div className="lg:grid lg:grid-cols-[180px_1fr] lg:gap-10">
@@ -67,6 +70,31 @@ export default async function CapituloPage({
         </nav>
 
         <h1 className="text-3xl font-semibold tracking-tight">{cap.titulo}</h1>
+
+        {/* Índice desplegable (solo móvil; en escritorio está el riel) */}
+        {secciones.length > 1 && (
+          <details className="group mt-4 rounded-xl border border-black/10 lg:hidden">
+            <summary className="cursor-pointer list-none px-4 py-3 text-sm font-medium text-black/70 marker:content-none">
+              En este capítulo
+              <span className="float-right text-black/40 transition group-open:rotate-180">
+                ▾
+              </span>
+            </summary>
+            <ul className="border-t border-black/10 px-4 py-2">
+              {secciones.map((s) => (
+                <li key={s.slug}>
+                  <a
+                    href={`#${s.slug}`}
+                    className="block py-1.5 text-sm text-black/60 hover:text-acento"
+                  >
+                    {s.titulo}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          </details>
+        )}
+
         {cap.intro && (
           <div
             className="prose-ctrlz mt-4 text-black/80"
@@ -79,9 +107,16 @@ export default async function CapituloPage({
           <section
             key={ap.slug}
             id={ap.slug}
-            className="prose-ctrlz scroll-mt-20 mt-12 border-t border-black/10 pt-8 first:border-0 first:pt-0"
-            dangerouslySetInnerHTML={{ __html: ap.html }}
-          />
+            className="scroll-mt-20 mt-12 border-t border-black/10 pt-8 first:border-0 first:pt-0"
+          >
+            <div
+              className="prose-ctrlz"
+              dangerouslySetInnerHTML={{ __html: ap.html }}
+            />
+            <TerminosApartado
+              terminos={terminos.get(`${disciplina}/${capitulo}/${ap.slug}`) ?? []}
+            />
+          </section>
         ))}
 
         <div className="mt-12 flex justify-between gap-4 border-t border-black/10 pt-4 text-sm">
