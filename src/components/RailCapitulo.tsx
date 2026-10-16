@@ -50,18 +50,18 @@ export default function RailCapitulo({
                 href={`#${s.slug}`}
                 onClick={(e) => ir(e, s.slug)}
                 aria-current={act ? 'true' : undefined}
-                className="flex items-center gap-3 py-1"
+                className="relative flex items-center py-1"
               >
                 <span
-                  className={`h-[3px] rounded-full transition-all duration-200 ${
+                  className={`block h-[3px] shrink-0 rounded-full transition-all duration-200 ${
                     act
                       ? 'w-8 bg-tinta'
                       : 'w-5 bg-black/20 group-hover:bg-black/35'
                   }`}
                 />
                 <span
-                  className={`whitespace-nowrap text-sm opacity-0 -translate-x-1 transition-all duration-200 group-hover:opacity-100 group-hover:translate-x-0 ${
-                    act ? 'text-tinta font-medium' : 'text-black/55'
+                  className={`pointer-events-none absolute left-11 top-1/2 -translate-y-1/2 whitespace-nowrap rounded bg-white px-2 py-0.5 text-sm opacity-0 shadow-sm ring-1 ring-black/5 transition-opacity duration-200 group-hover:opacity-100 ${
+                    act ? 'text-tinta font-medium' : 'text-black/60'
                   }`}
                 >
                   {s.titulo}
