@@ -5,10 +5,16 @@
  */
 
 const ETIQUETA_CATEGORIA: Record<string, string> = {
+  fundamentos: 'Fundamentos',
+  formato: 'Formato y soporte',
   reticula: 'Retícula',
   tipografia: 'Tipografía',
   maquetacion: 'Maquetación',
   composicion: 'Composición',
+  elementos: 'Elementos de la página',
+  color: 'Color',
+  imagen: 'Imagen',
+  produccion: 'Producción',
   'publicaciones-periodicas': 'Publicaciones periódicas',
 };
 
