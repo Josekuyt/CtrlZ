@@ -40,8 +40,11 @@ export default function RailCapitulo({
   }
 
   return (
-    <nav aria-label="Secciones del capítulo" className="group">
-      <ul className="flex flex-col gap-2">
+    <nav aria-label="Secciones del capítulo">
+      <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-black/40">
+        En este capítulo
+      </p>
+      <ul className="flex flex-col gap-1">
         {secciones.map((s) => {
           const act = activo === s.slug;
           return (
@@ -50,18 +53,18 @@ export default function RailCapitulo({
                 href={`#${s.slug}`}
                 onClick={(e) => ir(e, s.slug)}
                 aria-current={act ? 'true' : undefined}
-                className="relative flex items-center py-1"
+                className="flex items-start gap-3 py-1"
               >
                 <span
-                  className={`block h-[3px] shrink-0 rounded-full transition-all duration-200 ${
-                    act
-                      ? 'w-8 bg-tinta'
-                      : 'w-5 bg-black/20 group-hover:bg-black/35'
+                  className={`mt-[0.5rem] block h-[2px] shrink-0 rounded-full transition-all duration-200 ${
+                    act ? 'w-6 bg-tinta' : 'w-4 bg-black/25'
                   }`}
                 />
                 <span
-                  className={`pointer-events-none absolute left-11 top-1/2 -translate-y-1/2 whitespace-nowrap rounded bg-white px-2 py-0.5 text-sm opacity-0 shadow-sm ring-1 ring-black/5 transition-opacity duration-200 group-hover:opacity-100 ${
-                    act ? 'text-tinta font-medium' : 'text-black/60'
+                  className={`text-sm leading-snug transition-colors ${
+                    act
+                      ? 'text-tinta font-medium'
+                      : 'text-black/55 hover:text-black/80'
                   }`}
                 >
                   {s.titulo}

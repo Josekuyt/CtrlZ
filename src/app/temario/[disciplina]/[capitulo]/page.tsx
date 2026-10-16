@@ -52,7 +52,7 @@ export default async function CapituloPage({
   const terminos = terminosPorApartado();
 
   return (
-    <div className="lg:grid lg:grid-cols-[180px_1fr] lg:gap-10">
+    <div className="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
       {/* Riel de secciones (solo escritorio) */}
       <div className="hidden lg:block">
         <div className="sticky top-6">
