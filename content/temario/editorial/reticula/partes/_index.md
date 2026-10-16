@@ -1,5 +1,5 @@
 ---
-titulo: Partes de la retícula
+titulo: "Partes de la retícula"
 orden: 2
 consultas:
   - partes de una retícula

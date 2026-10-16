@@ -1,5 +1,5 @@
 ---
-titulo: Qué es la retícula
+titulo: "Qué es la retícula"
 orden: 1
 consultas:
   - qué es una retícula

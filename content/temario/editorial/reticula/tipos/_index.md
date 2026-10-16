@@ -1,5 +1,5 @@
 ---
-titulo: Tipos de retícula
+titulo: "Tipos de retícula"
 orden: 3
 consultas:
   - tipos de retícula
