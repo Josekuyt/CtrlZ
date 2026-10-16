@@ -41,7 +41,7 @@ function main() {
           consultas: ap.consultas,
           sinonimos: [],
           contexto: cap.titulo,
-          url: `/temario/${disc.slug}/${cap.slug}/${ap.slug}/`,
+          url: `/temario/${disc.slug}/${cap.slug}/#${ap.slug}`,
         });
       }
     }
