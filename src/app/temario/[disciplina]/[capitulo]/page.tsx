@@ -43,7 +43,6 @@ export default async function CapituloPage({
   const cap = obtenerCapitulo(disciplina, capitulo);
   if (!d || !cap) notFound();
 
-  // Capítulo anterior / siguiente para navegar sin volver al índice.
   const i = d.capitulos.findIndex((c) => c.slug === cap.slug);
   const anterior = d.capitulos[i - 1];
   const siguiente = d.capitulos[i + 1];
@@ -51,41 +50,69 @@ export default async function CapituloPage({
   const secciones = cap.apartados.map((a) => ({ slug: a.slug, titulo: a.titulo }));
   const terminos = terminosPorApartado();
 
+  // Otros capítulos para «También te puede interesar».
+  const otros = d.capitulos.filter((c) => c.slug !== cap.slug).slice(0, 4);
+
   return (
-    <div className="lg:grid lg:grid-cols-[230px_1fr] lg:gap-10">
-      {/* Riel de secciones (solo escritorio) */}
+    <div className="lg:grid lg:grid-cols-[230px_1fr] lg:gap-12">
+      {/* Columna lateral (solo escritorio) */}
       <div className="hidden lg:block">
-        <div className="sticky top-6">
+        <div className="sticky top-24 flex flex-col gap-8">
           <RailCapitulo secciones={secciones} />
+
+          {otros.length > 0 && (
+            <nav aria-label="Otros capítulos">
+              <p className="eyebrow mb-3">También te puede interesar</p>
+              <ul className="flex flex-col">
+                {otros.map((c) => (
+                  <li key={c.slug}>
+                    <Link
+                      href={`/temario/${d.slug}/${c.slug}/`}
+                      className="group flex items-center justify-between gap-2 border-t border-neutro-100 py-2 text-sm text-neutro-600 hover:text-rojo-600"
+                    >
+                      <span>{c.titulo}</span>
+                      <span aria-hidden="true" className="text-neutro-300 group-hover:text-rojo-500">
+                        →
+                      </span>
+                    </Link>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+          )}
         </div>
       </div>
 
       <article className="min-w-0">
-        <nav className="text-sm text-black/40 mb-2">
-          <Link href="/temario/" className="hover:text-acento">Temario</Link>
+        <nav className="mb-3 text-sm text-neutro-400">
+          <Link href="/temario/" className="hover:text-rojo-600">
+            Temario
+          </Link>
           <span className="mx-2">›</span>
-          <Link href={`/temario/${disciplina}/`} className="hover:text-acento">
+          <Link href={`/temario/${disciplina}/`} className="hover:text-rojo-600">
             {nombreDisciplina(disciplina)}
           </Link>
         </nav>
 
-        <h1 className="text-3xl font-semibold tracking-tight">{cap.titulo}</h1>
+        <h1 className="text-3xl font-semibold tracking-tight text-neutro-950">
+          {cap.titulo}
+        </h1>
 
-        {/* Índice desplegable (solo móvil; en escritorio está el riel) */}
+        {/* Índice desplegable (solo móvil) */}
         {secciones.length > 1 && (
-          <details className="group mt-4 rounded-xl border border-black/10 lg:hidden">
-            <summary className="cursor-pointer list-none px-4 py-3 text-sm font-medium text-black/70 marker:content-none">
+          <details className="group mt-4 rounded-xl border border-neutro-200 lg:hidden">
+            <summary className="cursor-pointer list-none px-4 py-3 text-sm font-medium text-neutro-700 marker:content-none">
               En este capítulo
-              <span className="float-right text-black/40 transition group-open:rotate-180">
+              <span className="float-right text-neutro-400 transition group-open:rotate-180">
                 ▾
               </span>
             </summary>
-            <ul className="border-t border-black/10 px-4 py-2">
+            <ul className="border-t border-neutro-100 px-4 py-2">
               {secciones.map((s) => (
                 <li key={s.slug}>
                   <a
                     href={`#${s.slug}`}
-                    className="block py-1.5 text-sm text-black/60 hover:text-acento"
+                    className="block py-1.5 text-sm text-neutro-600 hover:text-rojo-600"
                   >
                     {s.titulo}
                   </a>
@@ -97,35 +124,40 @@ export default async function CapituloPage({
 
         {cap.intro && (
           <div
-            className="prose-ctrlz mt-4 text-black/80"
+            className="prose-ctrlz mt-5 text-neutro-700"
             dangerouslySetInnerHTML={{ __html: cap.intro }}
           />
         )}
 
-        {/* Todos los apartados seguidos, cada uno anclado por su slug */}
         {cap.apartados.map((ap) => (
           <section
             key={ap.slug}
             id={ap.slug}
-            className="scroll-mt-20 mt-12 border-t border-black/10 pt-8 first:border-0 first:pt-0"
+            className="mt-12 scroll-mt-24 border-t border-neutro-100 pt-8 first:border-0 first:pt-0"
           >
-            <div
-              className="prose-ctrlz"
-              dangerouslySetInnerHTML={{ __html: ap.html }}
-            />
+            <div className="prose-ctrlz" dangerouslySetInnerHTML={{ __html: ap.html }} />
             <TerminosApartado
               terminos={terminos.get(`${disciplina}/${capitulo}/${ap.slug}`) ?? []}
             />
           </section>
         ))}
 
-        <div className="mt-12 flex justify-between gap-4 border-t border-black/10 pt-4 text-sm">
+        {/* Navegación anterior / siguiente */}
+        <nav className="mt-14 grid grid-cols-2 gap-4 border-t border-neutro-200 pt-6">
           {anterior ? (
             <Link
               href={`/temario/${disciplina}/${anterior.slug}/`}
-              className="text-acento hover:underline"
+              className="group flex items-center gap-3 text-left"
             >
-              ← {anterior.titulo}
+              <span aria-hidden="true" className="text-2xl text-neutro-300 transition group-hover:text-rojo-500">
+                ←
+              </span>
+              <span className="min-w-0">
+                <span className="eyebrow block">Anterior</span>
+                <span className="block truncate font-medium text-neutro-900 group-hover:text-rojo-600">
+                  {anterior.titulo}
+                </span>
+              </span>
             </Link>
           ) : (
             <span />
@@ -133,14 +165,22 @@ export default async function CapituloPage({
           {siguiente ? (
             <Link
               href={`/temario/${disciplina}/${siguiente.slug}/`}
-              className="text-acento hover:underline text-right"
+              className="group flex items-center justify-end gap-3 text-right"
             >
-              {siguiente.titulo} →
+              <span className="min-w-0">
+                <span className="eyebrow block">Siguiente</span>
+                <span className="block truncate font-medium text-neutro-900 group-hover:text-rojo-600">
+                  {siguiente.titulo}
+                </span>
+              </span>
+              <span aria-hidden="true" className="text-2xl text-neutro-300 transition group-hover:text-rojo-500">
+                →
+              </span>
             </Link>
           ) : (
             <span />
           )}
-        </div>
+        </nav>
       </article>
     </div>
   );

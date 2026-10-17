@@ -3,9 +3,11 @@
 @tailwind utilities;
 
 :root {
-  --tinta: #101418;
+  --tinta: #171717;
   --papel: #ffffff;
-  --acento: #2f6df6;
+  --acento: #eb0000;
+  --neutro-400: #a3a3a3;
+  --neutro-500: #737373;
 }
 
 html {
@@ -15,23 +17,39 @@ html {
 body {
   background: var(--papel);
   color: var(--tinta);
+  font-family: 'IBM Plex Sans', system-ui, 'Segoe UI', Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
 }
 
 a {
   color: inherit;
 }
 
+/* Etiqueta tipo «eyebrow» (TIPO, EN ESTE CAPÍTULO, CATEGORÍAS…) */
+.eyebrow {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--neutro-400);
+}
+
 /* Estilos del contenido rico del temario (HTML generado desde Markdown) */
+.prose-ctrlz {
+  color: #262626;
+}
 .prose-ctrlz h2 {
   font-size: 1.5rem;
   font-weight: 600;
   letter-spacing: -0.01em;
+  color: #0a0a0a;
   margin: 0 0 0.75rem;
 }
 .prose-ctrlz h3 {
-  font-size: 1.125rem;
+  font-size: 1.0625rem;
   font-weight: 600;
+  color: #0a0a0a;
   margin: 1.75rem 0 0.5rem;
 }
 .prose-ctrlz p {
@@ -44,7 +62,12 @@ a {
   margin: 0 0 1rem;
 }
 .prose-ctrlz li {
-  margin: 0.25rem 0;
+  margin: 0.3rem 0;
+  line-height: 1.6;
+}
+.prose-ctrlz strong {
+  font-weight: 600;
+  color: #0a0a0a;
 }
 .prose-ctrlz a {
   color: var(--acento);
@@ -53,8 +76,12 @@ a {
 }
 .prose-ctrlz blockquote {
   border-left: 3px solid var(--acento);
-  padding-left: 1rem;
-  margin: 1.25rem 0;
-  color: rgba(16, 20, 24, 0.7);
+  background: #fde5e5;
+  padding: 0.75rem 1rem;
+  margin: 1.5rem 0;
+  color: #262626;
   font-style: italic;
+}
+.prose-ctrlz blockquote p {
+  margin: 0;
 }

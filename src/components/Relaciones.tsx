@@ -13,6 +13,7 @@ const ORDEN: TipoRelacion[] = [
   'ver_tambien',
 ];
 
+/** Relaciones del concepto, en formato compacto para la barra lateral. */
 export default function Relaciones({
   concepto,
   grafo,
@@ -32,22 +33,18 @@ export default function Relaciones({
   }
 
   return (
-    <section className="mt-10">
-      <h2 className="text-sm font-semibold uppercase tracking-wide text-black/40">
-        Relaciones
-      </h2>
-      <dl className="mt-3 flex flex-col gap-3">
+    <section>
+      <p className="eyebrow mb-3">Relacionados</p>
+      <dl className="flex flex-col gap-3">
         {ORDEN.filter((t) => porTipo.has(t)).map((t) => (
-          <div key={t} className="flex flex-col sm:flex-row sm:gap-4">
-            <dt className="w-40 shrink-0 text-sm text-black/50">
-              {ETIQUETA_RELACION[t]}
-            </dt>
-            <dd className="flex flex-wrap gap-2">
+          <div key={t}>
+            <dt className="mb-1.5 text-xs text-neutro-500">{ETIQUETA_RELACION[t]}</dt>
+            <dd className="flex flex-wrap gap-1.5">
               {porTipo.get(t)!.map((d) => (
                 <Link
                   key={d.id}
                   href={`/glosario/${d.disciplina}/${d.id}/`}
-                  className="rounded-full border border-black/15 px-3 py-0.5 text-sm hover:border-acento hover:text-acento"
+                  className="rounded-full border border-neutro-300 px-3 py-0.5 text-sm text-neutro-700 transition hover:border-rojo-500 hover:text-rojo-600"
                 >
                   {d.nombre}
                 </Link>

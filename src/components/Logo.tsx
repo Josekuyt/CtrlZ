@@ -1,28 +1,49 @@
 import Link from 'next/link';
 
-/** Marca CtrlZ. `size` controla la escala; se usa en cabecera y en el héroe. */
+/** Imagotipo CtrlZ (isotipo rojo + wordmark), exportado de Figma. */
 export default function Logo({
-  size = 'sm',
+  className = 'h-[26px]',
   asLink = true,
 }: {
-  size?: 'sm' | 'lg';
+  className?: string;
   asLink?: boolean;
 }) {
-  const clase =
-    size === 'lg'
-      ? 'text-4xl sm:text-5xl font-semibold tracking-tight'
-      : 'text-lg font-semibold tracking-tight';
-
-  const marca = (
-    <span className={clase}>
-      Ctrl<span className="text-acento">Z</span>
-    </span>
+  const svg = (
+    <svg
+      viewBox="0 0 118 40"
+      className={`${className} w-auto`}
+      role="img"
+      aria-label="CtrlZ"
+      xmlns="http://www.w3.org/2000/svg"
+    >
+      <path
+        d="M0.572663 13.3333V26.6667H29.4868L0 40H32.4041V26.6667V0L0.572663 13.3333Z"
+        fill="#EB0000"
+      />
+      <path
+        d="M50.2971 19.6867C50.2971 13.5494 54.2517 8.95732 60.3998 8.95732C62.6688 8.95732 64.6353 9.50838 66.04 10.5565C67.8984 11.9071 68.9681 13.9276 69.2166 16.2507H64.5165C64.2355 14.3166 62.6904 12.8795 60.3674 12.8795C56.8557 12.8795 55.1161 15.7861 55.1161 19.6867C55.1161 23.5872 57.1691 26.4614 60.3998 26.4614C62.9173 26.4614 64.4624 24.8298 64.6893 22.7012H69.4219C69.2815 24.7542 68.3414 26.6559 66.9368 28.0389C65.3917 29.5624 63.2847 30.362 60.4106 30.362C54.403 30.362 50.3079 25.8239 50.3079 19.6867H50.2971Z"
+        fill="#171717"
+      />
+      <path
+        d="M70.9886 15.181H73.2037V10.4808H77.4608V15.181H80.3349V17.9471H77.4608V25.2512C77.4608 26.3533 78.0659 26.6667 79.0924 26.6667C79.3733 26.6667 79.8163 26.6343 80.0864 26.6126H80.3133V29.8541C79.8379 29.9406 78.9627 30.081 77.7958 30.081C75.0621 30.081 73.2037 29.195 73.2037 26.2129V17.9687H70.9886V15.2026V15.181Z"
+        fill="#171717"
+      />
+      <path
+        d="M86.7855 17.8066H86.872C87.812 15.7536 89.141 14.9325 90.9671 14.9325C91.3776 14.9325 91.691 14.9649 91.8747 15.0405V18.8331H91.7666C91.4641 18.779 91.1615 18.7466 90.8482 18.7466C88.4927 18.7142 86.9476 20.1837 86.9476 23.0578V29.8865H82.604V15.1702H86.7855V17.7958V17.8066Z"
+        fill="#171717"
+      />
+      <path d="M94.0032 9.31389H98.3792V29.8974H94.0032V9.31389Z" fill="#171717" />
+      <path
+        d="M100.843 26.0724L108.449 16.8341C109.692 15.3431 111.853 13.2361 111.853 13.2361V13.1497C111.853 13.1497 109.119 13.2901 107.509 13.2901H101.588V9.30308H117.418V13.0092L110.081 21.9773C108.73 23.6089 106.342 25.9319 106.342 25.9319V26.0184C106.342 26.0184 109.217 25.8563 110.935 25.8563H117.796V29.8974H100.832V26.0832L100.843 26.0724Z"
+        fill="#171717"
+      />
+    </svg>
   );
 
-  if (!asLink) return marca;
+  if (!asLink) return svg;
   return (
-    <Link href="/" aria-label="CtrlZ · inicio" className="inline-block">
-      {marca}
+    <Link href="/" aria-label="CtrlZ · inicio" className="inline-flex items-center">
+      {svg}
     </Link>
   );
 }

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { cargarTemario, obtenerDisciplina } from '@/lib/temario';
 
-/** Chips de disciplina + grid de capítulos (con ligero escalonado). */
+/** Índice del temario: título + descripción + chips de disciplina + grid de capítulos. */
 export default function VistaTemario({
   disciplinaActiva,
 }: {
@@ -12,9 +12,9 @@ export default function VistaTemario({
 
   return (
     <div>
-      <h1 className="text-3xl font-semibold tracking-tight">Temario</h1>
-      <p className="mt-2 text-black/60">
-        Elige una disciplina y entra en un capítulo.
+      <h1 className="text-4xl font-semibold tracking-tight text-neutro-950">Temario</h1>
+      <p className="mt-2 text-lg text-neutro-500">
+        Elige una disciplina y explora sus capítulos.
       </p>
 
       {/* Chips de disciplina */}
@@ -23,10 +23,10 @@ export default function VistaTemario({
           <Link
             key={d.slug}
             href={`/temario/${d.slug}/`}
-            className={`rounded-full border px-4 py-1.5 text-sm ${
+            className={`rounded-full border px-4 py-1.5 text-sm font-medium transition ${
               d.slug === activa?.slug
-                ? 'border-acento bg-acento/10 text-acento'
-                : 'border-black/15 text-black/60 hover:border-acento'
+                ? 'border-rojo-500 bg-rojo-50 text-rojo-600'
+                : 'border-neutro-300 text-neutro-600 hover:border-rojo-400 hover:text-rojo-600'
             }`}
           >
             {d.titulo}
@@ -34,27 +34,28 @@ export default function VistaTemario({
         ))}
       </div>
 
-      {/* Grid de capítulos, escalonado */}
-      <div className="mt-8 grid gap-4 sm:grid-cols-2">
+      {/* Grid de capítulos */}
+      <div className="mt-10 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
         {activa?.capitulos.map((cap, idx) => (
           <Link
             key={cap.slug}
             href={`/temario/${activa.slug}/${cap.slug}/`}
-            className={`group block rounded-xl border border-black/10 p-5 transition hover:border-acento hover:shadow-sm ${
-              idx % 2 === 1 ? 'sm:mt-6' : ''
-            }`}
+            className="group flex flex-col rounded-xl border border-neutro-200 bg-white p-6 transition hover:border-neutro-300 hover:shadow-sm"
           >
-            <div className="flex items-baseline justify-between gap-3">
-              <h2 className="text-lg font-medium group-hover:text-acento">
-                {cap.titulo}
-              </h2>
-              <span className="shrink-0 text-xs text-black/40">
-                {cap.apartados.length} apartados
-              </span>
-            </div>
+            <span className="font-mono text-sm text-neutro-400">
+              {String(idx + 1).padStart(2, '0')}
+            </span>
+            <h2 className="mt-2 text-lg font-semibold leading-snug text-neutro-950 group-hover:text-rojo-600">
+              {cap.titulo}
+            </h2>
             {cap.descripcion && (
-              <p className="mt-1 text-sm text-black/60">{cap.descripcion}</p>
+              <p className="mt-2 flex-1 text-sm leading-relaxed text-neutro-600">
+                {cap.descripcion}
+              </p>
             )}
+            <span className="mt-4 inline-flex items-center gap-1 text-sm font-medium text-rojo-600">
+              Ver capítulo <span aria-hidden="true">→</span>
+            </span>
           </Link>
         ))}
       </div>

@@ -41,24 +41,22 @@ export default async function GlosarioDisciplinaPage({
 
   return (
     <div>
-      <nav className="text-sm text-black/40 mb-2">
-        <Link href="/glosario/" className="hover:text-acento">
+      <nav className="mb-2 text-sm text-neutro-400">
+        <Link href="/glosario/" className="hover:text-rojo-600">
           Glosario
         </Link>
       </nav>
-      <h1 className="text-3xl font-semibold tracking-tight">
+      <h1 className="text-4xl font-semibold tracking-tight text-neutro-950">
         {nombreDisciplina(disciplina)}
       </h1>
-      <p className="mt-2 text-black/60">{conceptos.length} términos.</p>
+      <p className="mt-2 text-neutro-500">{conceptos.length} términos.</p>
 
       <div className="mt-8 flex flex-col gap-8">
         {[...porCategoria.entries()]
           .sort((a, b) => a[0].localeCompare(b[0], 'es'))
           .map(([categoria, lista]) => (
-            <section key={categoria} id={categoria} className="scroll-mt-20">
-              <h2 className="text-sm font-semibold uppercase tracking-wide text-black/40">
-                {etiquetaCategoria(categoria)}
-              </h2>
+            <section key={categoria} id={categoria} className="scroll-mt-24">
+              <h2 className="eyebrow">{etiquetaCategoria(categoria)}</h2>
               <ul className="mt-2 flex flex-col gap-1">
                 {lista
                   .sort((a, b) => a.nombre.localeCompare(b.nombre, 'es'))
@@ -66,7 +64,7 @@ export default async function GlosarioDisciplinaPage({
                     <li key={c.id}>
                       <Link
                         href={`/glosario/${c.disciplina}/${c.id}/`}
-                        className="hover:text-acento"
+                        className="text-neutro-700 hover:text-rojo-600"
                       >
                         {c.nombre}
                       </Link>

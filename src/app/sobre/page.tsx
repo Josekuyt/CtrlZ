@@ -9,7 +9,7 @@ export const metadata: Metadata = {
 export default function SobrePage() {
   return (
     <article className="prose-ctrlz max-w-2xl">
-      <h1 className="text-3xl font-semibold tracking-tight">Sobre CtrlZ</h1>
+      <h1 className="mb-8 text-4xl font-semibold tracking-tight text-neutro-950">Sobre CtrlZ</h1>
 
       <h2>Qué es</h2>
       <p>
@@ -64,7 +64,7 @@ export default function SobrePage() {
       </p>
 
       <p className="mt-8">
-        <Link href="/" className="text-acento underline underline-offset-2">
+        <Link href="/" className="text-rojo-600 underline underline-offset-2">
           Volver al inicio
         </Link>
       </p>

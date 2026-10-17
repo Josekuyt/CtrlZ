@@ -1,57 +1,80 @@
 import Link from 'next/link';
-import Logo from '@/components/Logo';
 import CajaBusqueda from '@/components/CajaBusqueda';
 
-// Sugerencias que enseñan qué tipo de preguntas admite el buscador.
+// Preguntas de ejemplo que enseñan qué admite el buscador.
 const SUGERENCIAS = [
-  'Cómo se llama el espaciado entre columnas',
+  'Cómo se llama el espacio entre columnas',
   'Para qué sirve una retícula',
   'Qué diferencia hay entre kerning y tracking',
 ];
 
+// Disciplinas del mapa de CtrlZ. Solo Diseño editorial está disponible (MVP).
+const DISCIPLINAS: { label: string; href?: string }[] = [
+  { label: 'Diseño editorial', href: '/temario/editorial/' },
+  { label: 'Tipografía' },
+  { label: 'Composición' },
+  { label: 'Color' },
+  { label: 'Identidad visual' },
+  { label: 'Motion graphics' },
+  { label: 'Diseño interactivo' },
+  { label: 'Fotografía' },
+  { label: 'Señalética' },
+  { label: 'Lenguaje visual' },
+];
+
 export default function Home() {
   return (
-    <div className="flex flex-col items-center text-center gap-8 pt-10 sm:pt-20">
-      <div className="flex flex-col items-center gap-3">
-        <Logo size="lg" asLink={false} />
-        <p className="max-w-xl text-black/60">
-          Resuelve tus dudas de diseño. Describe lo que no recuerdas y te llevamos
-          al concepto correcto, aunque no sepas su nombre exacto.
-        </p>
-      </div>
+    <div className="flex flex-col items-center">
+      <h1 className="sr-only">CtrlZ — resuelve tus dudas de diseño</h1>
 
-      <div className="w-full max-w-xl">
+      {/* Héroe: el buscador es el centro de la página */}
+      <section className="w-full max-w-2xl pt-8 text-center sm:pt-16">
         <CajaBusqueda autoFocus globalHotkey />
 
-        <div className="mt-5">
-          <p className="text-xs uppercase tracking-wide text-black/40 mb-2">
-            Prueba a preguntar
-          </p>
-          <div className="flex flex-col sm:flex-row sm:flex-wrap sm:justify-center gap-2">
+        <div className="mt-6">
+          <p className="eyebrow mb-3">Prueba a preguntar</p>
+          <div className="flex flex-wrap justify-center gap-2">
             {SUGERENCIAS.map((s) => (
               <Link
                 key={s}
                 href={`/buscar/?q=${encodeURIComponent(s)}`}
-                className="rounded-full border border-black/15 px-4 py-2 text-sm text-black/70 hover:border-acento hover:text-acento"
+                className="rounded-lg border border-neutro-200 px-4 py-2 text-sm text-neutro-700 transition hover:border-rojo-500 hover:text-rojo-600"
               >
                 {s}
               </Link>
             ))}
           </div>
         </div>
-      </div>
+      </section>
 
-      <p className="text-sm text-black/50">
-        O explora el{' '}
-        <Link href="/temario" className="text-acento underline underline-offset-2">
-          temario
-        </Link>{' '}
-        y el{' '}
-        <Link href="/glosario" className="text-acento underline underline-offset-2">
-          glosario
-        </Link>
-        .
-      </p>
+      {/* Disciplinas: breadth del proyecto; de momento solo editorial */}
+      <section className="mt-16 w-full max-w-3xl sm:mt-24">
+        <p className="eyebrow mb-4 text-center">Explora por disciplina</p>
+        <div className="flex flex-wrap justify-center gap-2">
+          {DISCIPLINAS.map((d) =>
+            d.href ? (
+              <Link
+                key={d.label}
+                href={d.href}
+                className="rounded-full border border-neutro-300 px-4 py-1.5 text-sm font-medium text-neutro-900 transition hover:border-rojo-500 hover:text-rojo-600"
+              >
+                {d.label}
+              </Link>
+            ) : (
+              <span
+                key={d.label}
+                title="Próximamente"
+                className="rounded-full border border-neutro-200 px-4 py-1.5 text-sm text-neutro-400"
+              >
+                {d.label}
+              </span>
+            ),
+          )}
+        </div>
+        <p className="mt-4 text-center text-sm text-neutro-500">
+          Empezamos por Diseño editorial; el resto llegará poco a poco.
+        </p>
+      </section>
     </div>
   );
 }

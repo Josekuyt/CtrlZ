@@ -1,7 +1,12 @@
 import type { Metadata } from 'next';
 import Link from 'next/link';
-import Logo from '@/components/Logo';
-import BuscadorCabecera from '@/components/BuscadorCabecera';
+import Header from '@/components/Header';
+import '@fontsource/ibm-plex-sans/400.css';
+import '@fontsource/ibm-plex-sans/500.css';
+import '@fontsource/ibm-plex-sans/600.css';
+import '@fontsource/ibm-plex-sans/700.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
 import './globals.css';
 
 export const metadata: Metadata = {
@@ -10,8 +15,11 @@ export const metadata: Metadata = {
     template: '%s · CtrlZ',
   },
   description:
-    'Plataforma de conocimiento de diseño. Escribe tu duda y encuentra el concepto correcto, aunque no recuerdes su nombre. Empezamos por Diseño Editorial.',
+    'CtrlZ — consulta y aprendizaje de diseño gráfico. Escribe tu duda y encuentra el concepto correcto, aunque no recuerdes su nombre. Empezamos por Diseño Editorial.',
 };
+
+const SUGERENCIA_URL =
+  'https://github.com/Josekuyt/CtrlZ/issues/new?title=Sugerencia&body=Cu%C3%A9ntanos%20qu%C3%A9%20t%C3%A9rmino%20falta%20o%20qu%C3%A9%20mejorar%C3%ADas%3A%0A%0A';
 
 export default function RootLayout({
   children,
@@ -20,39 +28,29 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es">
-      <body className="min-h-screen flex flex-col">
-        <header className="border-b border-black/10">
-          <div className="mx-auto max-w-4xl px-4 h-14 flex items-center justify-between gap-4">
-            <div className="flex items-center gap-5">
-              <Logo />
-              <Link
-                href="/sobre"
-                className="text-sm text-black/60 hover:text-acento"
+      <body className="flex min-h-screen flex-col bg-white font-sans text-neutro-900">
+        <Header />
+
+        <main className="mx-auto w-full max-w-6xl flex-1 px-6 py-10 sm:py-12">
+          {children}
+        </main>
+
+        <footer className="border-t border-neutro-200">
+          <div className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-3 px-6 py-6 text-sm text-neutro-500">
+            <span>CtrlZ — consulta y aprendizaje de diseño gráfico</span>
+            <div className="flex items-center gap-6">
+              <a
+                href={SUGERENCIA_URL}
+                target="_blank"
+                rel="noreferrer"
+                className="hover:text-rojo-500"
               >
+                Sugerir una mejora
+              </a>
+              <Link href="/sobre" className="hover:text-rojo-500">
                 Sobre CtrlZ
               </Link>
             </div>
-            <nav className="flex items-center gap-5 text-sm">
-              <BuscadorCabecera />
-              <Link href="/temario" className="hover:text-acento">Temario</Link>
-              <Link href="/glosario" className="hover:text-acento">Glosario</Link>
-            </nav>
-          </div>
-        </header>
-
-        <main className="flex-1 mx-auto w-full max-w-4xl px-4 py-10">{children}</main>
-
-        <footer className="border-t border-black/10">
-          <div className="mx-auto flex max-w-4xl flex-wrap items-center justify-between gap-2 px-4 py-6 text-sm text-black/50">
-            <span>CtrlZ · plataforma de conocimiento de diseño · MVP: Diseño Editorial</span>
-            <a
-              href="https://github.com/Josekuyt/CtrlZ/issues/new?title=Sugerencia&body=Cu%C3%A9ntanos%20qu%C3%A9%20t%C3%A9rmino%20falta%20o%20qu%C3%A9%20mejorar%C3%ADas%3A%0A%0A"
-              target="_blank"
-              rel="noreferrer"
-              className="underline hover:text-acento"
-            >
-              Sugerir un término o mejora
-            </a>
           </div>
         </footer>
       </body>

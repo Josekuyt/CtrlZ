@@ -4,6 +4,24 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 import { buscar, type Resultado } from '@/lib/busqueda';
 
+function IconoLupa({ className = '' }: { className?: string }) {
+  return (
+    <svg
+      viewBox="0 0 24 24"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      className={className}
+      aria-hidden="true"
+    >
+      <circle cx="11" cy="11" r="7" />
+      <path d="m21 21-4.3-4.3" />
+    </svg>
+  );
+}
+
 export default function CajaBusqueda({
   valorInicial = '',
   autoFocus = false,
@@ -22,8 +40,9 @@ export default function CajaBusqueda({
   const [activo, setActivo] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
   const cajaRef = useRef<HTMLDivElement>(null);
+  // Evita abrir el desplegable al cargar con un valor prellenado (p. ej. /buscar).
+  const interactuado = useRef(false);
 
-  // Autocompletar (con pequeño retardo para no buscar en cada tecla).
   useEffect(() => {
     const t = q.trim();
     if (t.length < 2) {
@@ -36,7 +55,7 @@ export default function CajaBusqueda({
       buscar(t, 6).then((r) => {
         if (!activoFlag) return;
         setSugerencias(r);
-        setAbierto(r.length > 0);
+        setAbierto(r.length > 0 && interactuado.current);
         setActivo(-1);
       });
     }, 120);
@@ -46,7 +65,6 @@ export default function CajaBusqueda({
     };
   }, [q]);
 
-  // Cerrar al hacer clic fuera.
   useEffect(() => {
     function fuera(e: MouseEvent) {
       if (cajaRef.current && !cajaRef.current.contains(e.target as Node)) {
@@ -57,7 +75,6 @@ export default function CajaBusqueda({
     return () => document.removeEventListener('mousedown', fuera);
   }, []);
 
-  // Atajo "/" para enfocar el buscador.
   useEffect(() => {
     if (!globalHotkey) return;
     function onKey(e: KeyboardEvent) {
@@ -104,7 +121,7 @@ export default function CajaBusqueda({
     }
   }
 
-  const alto = compacto ? 'py-1.5 text-sm' : 'py-3 text-base';
+  const alto = compacto ? 'h-11 px-3.5' : 'h-14 px-5';
 
   return (
     <div ref={cajaRef} className="relative w-full">
@@ -112,14 +129,22 @@ export default function CajaBusqueda({
         <label htmlFor="q" className="sr-only">
           Escribe tu duda de diseño
         </label>
-        <div className="flex gap-2">
+        <div
+          className={`flex items-center gap-3 rounded-xl border border-neutro-200 bg-white ${alto} transition focus-within:border-rojo-500 focus-within:ring-2 focus-within:ring-rojo-500/15`}
+        >
+          <kbd className="hidden h-6 w-6 shrink-0 items-center justify-center rounded border border-neutro-300 font-mono text-sm text-neutro-500 sm:flex">
+            /
+          </kbd>
           <input
             ref={inputRef}
             id="q"
             name="q"
             type="search"
             value={q}
-            onChange={(e) => setQ(e.target.value)}
+            onChange={(e) => {
+              interactuado.current = true;
+              setQ(e.target.value);
+            }}
             onKeyDown={teclado}
             onFocus={() => sugerencias.length > 0 && setAbierto(true)}
             // eslint-disable-next-line jsx-a11y/no-autofocus
@@ -128,17 +153,18 @@ export default function CajaBusqueda({
             role="combobox"
             aria-expanded={abierto}
             aria-controls="sugerencias"
-            placeholder={compacto ? 'Buscar…' : 'Escribe una duda o describe la idea…'}
-            className={`flex-1 rounded-lg border border-black/15 px-4 ${alto} outline-none focus:border-acento focus:ring-2 focus:ring-acento/30`}
+            placeholder="¿Qué necesitas saber?"
+            className={`min-w-0 flex-1 bg-transparent text-neutro-900 outline-none placeholder:text-neutro-400 ${
+              compacto ? 'text-sm' : 'text-base'
+            } [&::-webkit-search-cancel-button]:appearance-none`}
           />
-          {!compacto && (
-            <button
-              type="submit"
-              className="rounded-lg bg-acento px-5 py-3 text-white font-medium hover:opacity-90"
-            >
-              Buscar
-            </button>
-          )}
+          <button
+            type="submit"
+            aria-label="Buscar"
+            className="shrink-0 text-neutro-500 transition hover:text-rojo-500"
+          >
+            <IconoLupa className={compacto ? 'h-4 w-4' : 'h-5 w-5'} />
+          </button>
         </div>
       </form>
 
@@ -146,7 +172,7 @@ export default function CajaBusqueda({
         <ul
           id="sugerencias"
           role="listbox"
-          className="absolute z-20 mt-1 w-full overflow-hidden rounded-lg border border-black/15 bg-white shadow-lg text-left"
+          className="absolute z-30 mt-2 w-full overflow-hidden rounded-xl border border-neutro-200 bg-white text-left shadow-lg"
         >
           {sugerencias.map((s, i) => (
             <li key={s.id} role="option" aria-selected={i === activo}>
@@ -154,22 +180,22 @@ export default function CajaBusqueda({
                 type="button"
                 onMouseEnter={() => setActivo(i)}
                 onClick={() => router.push(s.url)}
-                className={`flex w-full items-baseline justify-between gap-3 px-4 py-2 text-left ${
-                  i === activo ? 'bg-acento/10' : 'hover:bg-black/5'
+                className={`flex w-full items-baseline justify-between gap-3 px-4 py-2.5 text-left ${
+                  i === activo ? 'bg-rojo-50' : 'hover:bg-neutro-50'
                 }`}
               >
-                <span className="truncate text-sm">{s.titulo}</span>
-                <span className="shrink-0 text-[10px] uppercase tracking-wide text-black/40">
+                <span className="truncate text-sm text-neutro-900">{s.titulo}</span>
+                <span className="shrink-0 font-mono text-[10px] uppercase tracking-wide text-neutro-400">
                   {s.tipo}
                 </span>
               </button>
             </li>
           ))}
-          <li>
+          <li className="border-t border-neutro-100">
             <button
               type="button"
               onClick={() => irABuscar(q)}
-              className="w-full px-4 py-2 text-left text-xs text-acento hover:bg-black/5"
+              className="w-full px-4 py-2.5 text-left text-xs font-medium text-rojo-600 hover:bg-neutro-50"
             >
               Ver todos los resultados de «{q.trim()}» →
             </button>
