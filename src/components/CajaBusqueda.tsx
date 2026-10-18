@@ -154,7 +154,7 @@ export default function CajaBusqueda({
             aria-expanded={abierto}
             aria-controls="sugerencias"
             placeholder="¿Qué necesitas saber?"
-            className={`min-w-0 flex-1 bg-transparent text-neutro-900 outline-none placeholder:text-neutro-400 ${
+            className={`min-w-0 flex-1 bg-transparent text-neutro-900 outline-none placeholder:text-neutro-500 ${
               compacto ? 'text-sm' : 'text-base'
             } [&::-webkit-search-cancel-button]:appearance-none`}
           />
@@ -185,7 +185,7 @@ export default function CajaBusqueda({
                 }`}
               >
                 <span className="truncate text-sm text-neutro-900">{s.titulo}</span>
-                <span className="shrink-0 font-mono text-[10px] uppercase tracking-wide text-neutro-400">
+                <span className="shrink-0 font-mono text-[10px] uppercase tracking-wide text-neutro-500">
                   {s.tipo}
                 </span>
               </button>

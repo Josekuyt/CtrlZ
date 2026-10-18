@@ -15,7 +15,10 @@ export async function generateMetadata({
   params: Promise<Params>;
 }): Promise<Metadata> {
   const { disciplina } = await params;
-  return { title: `Temario · ${nombreDisciplina(disciplina)}` };
+  return {
+    title: `Temario · ${nombreDisciplina(disciplina)}`,
+    alternates: { canonical: `/temario/${disciplina}/` },
+  };
 }
 
 export default async function DisciplinaPage({

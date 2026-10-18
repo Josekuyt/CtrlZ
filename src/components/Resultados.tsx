@@ -44,7 +44,7 @@ function OpcionFiltro({
       }`}
     >
       <span className="truncate">{label}</span>
-      <span className={`shrink-0 text-xs ${activo ? 'text-rojo-500' : 'text-neutro-400'}`}>
+      <span className={`shrink-0 text-xs ${activo ? 'text-rojo-600' : 'text-neutro-500'}`}>
         {n}
       </span>
     </button>
@@ -159,10 +159,10 @@ export default function Resultados() {
                   className="group rounded-xl border border-neutro-200 bg-white p-5 transition hover:border-neutro-300 hover:shadow-sm sm:p-6"
                 >
                   <div className="mb-2 flex flex-wrap items-center gap-2">
-                    <span className="rounded bg-neutro-100 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wide text-neutro-500">
+                    <span className="rounded bg-neutro-100 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wide text-neutro-600">
                       {h.tipo}
                     </span>
-                    <span className="rounded bg-neutro-100 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wide text-neutro-500">
+                    <span className="rounded bg-neutro-100 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wide text-neutro-600">
                       {etiquetaCategoria(h.contexto)}
                     </span>
                   </div>

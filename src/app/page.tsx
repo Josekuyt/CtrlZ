@@ -1,5 +1,10 @@
 import Link from 'next/link';
+import type { Metadata } from 'next';
 import CajaBusqueda from '@/components/CajaBusqueda';
+
+export const metadata: Metadata = {
+  alternates: { canonical: '/' },
+};
 
 // Preguntas de ejemplo que enseñan qué admite el buscador.
 const SUGERENCIAS = [

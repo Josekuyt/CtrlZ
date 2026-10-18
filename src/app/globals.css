@@ -26,13 +26,36 @@ a {
   color: inherit;
 }
 
+/* Respeta la preferencia de menos movimiento del sistema */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Foco visible por teclado (no se muestra al hacer clic con el ratón) */
+a:focus-visible,
+button:focus-visible,
+select:focus-visible,
+summary:focus-visible,
+[tabindex]:focus-visible {
+  outline: 2px solid var(--acento);
+  outline-offset: 2px;
+  border-radius: 3px;
+}
+
 /* Etiqueta tipo «eyebrow» (TIPO, EN ESTE CAPÍTULO, CATEGORÍAS…) */
 .eyebrow {
   font-size: 0.6875rem;
   font-weight: 600;
   letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: var(--neutro-400);
+  color: var(--neutro-500);
 }
 
 /* Estilos del contenido rico del temario (HTML generado desde Markdown) */

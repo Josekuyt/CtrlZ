@@ -4,6 +4,7 @@ import type { Metadata } from 'next';
 export const metadata: Metadata = {
   title: 'Sobre CtrlZ',
   description: 'Qué es CtrlZ, por qué existe y cómo funciona.',
+  alternates: { canonical: '/sobre/' },
 };
 
 export default function SobrePage() {

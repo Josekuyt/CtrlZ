@@ -5,6 +5,7 @@ import VistaTemario from '@/components/VistaTemario';
 export const metadata: Metadata = {
   title: 'Temario',
   description: 'Temario navegable de diseño, por disciplinas.',
+  alternates: { canonical: '/temario/' },
 };
 
 export default function TemarioIndex() {

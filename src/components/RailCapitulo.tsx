@@ -41,7 +41,7 @@ export default function RailCapitulo({
 
   return (
     <nav aria-label="Secciones del capítulo">
-      <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-black/40">
+      <p className="mb-3 text-xs font-semibold uppercase tracking-wide text-neutro-500">
         En este capítulo
       </p>
       <ul className="flex flex-col gap-1">
@@ -63,8 +63,8 @@ export default function RailCapitulo({
                 <span
                   className={`text-sm leading-snug transition-colors ${
                     act
-                      ? 'text-tinta font-medium'
-                      : 'text-black/55 hover:text-black/80'
+                      ? 'text-neutro-900 font-medium'
+                      : 'text-neutro-600 hover:text-neutro-900'
                   }`}
                 >
                   {s.titulo}

@@ -5,6 +5,7 @@ import VistaGlosario, { type ItemGlosario } from '@/components/VistaGlosario';
 export const metadata: Metadata = {
   title: 'Glosario',
   description: 'Todos los términos de diseño, de la A a la Z.',
+  alternates: { canonical: '/glosario/' },
 };
 
 export default function GlosarioIndex() {

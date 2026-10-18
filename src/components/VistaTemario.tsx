@@ -42,7 +42,7 @@ export default function VistaTemario({
             href={`/temario/${activa.slug}/${cap.slug}/`}
             className="group flex flex-col rounded-xl border border-neutro-200 bg-white p-6 transition hover:border-neutro-300 hover:shadow-sm"
           >
-            <span className="font-mono text-sm text-neutro-400">
+            <span className="font-mono text-sm text-neutro-500">
               {String(idx + 1).padStart(2, '0')}
             </span>
             <h2 className="mt-2 text-lg font-semibold leading-snug text-neutro-950 group-hover:text-rojo-600">

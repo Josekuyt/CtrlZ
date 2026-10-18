@@ -9,7 +9,9 @@ import {
 } from '@/lib/temario';
 import RailCapitulo from '@/components/RailCapitulo';
 import TerminosApartado from '@/components/TerminosApartado';
+import JsonLd from '@/components/JsonLd';
 import { terminosPorApartado } from '@/lib/datos';
+import { SITE_URL, SITE_NAME } from '@/lib/site';
 
 type Params = { disciplina: string; capitulo: string };
 
@@ -30,7 +32,19 @@ export async function generateMetadata({
 }): Promise<Metadata> {
   const { disciplina, capitulo } = await params;
   const cap = obtenerCapitulo(disciplina, capitulo);
-  return cap ? { title: cap.titulo, description: cap.descripcion } : {};
+  if (!cap) return {};
+  const ruta = `/temario/${disciplina}/${capitulo}/`;
+  return {
+    title: cap.titulo,
+    description: cap.descripcion,
+    alternates: { canonical: ruta },
+    openGraph: {
+      type: 'article',
+      url: ruta,
+      title: cap.titulo,
+      description: cap.descripcion,
+    },
+  };
 }
 
 export default async function CapituloPage({
@@ -53,8 +67,38 @@ export default async function CapituloPage({
   // Otros capítulos para «También te puede interesar».
   const otros = d.capitulos.filter((c) => c.slug !== cap.slug).slice(0, 4);
 
+  const ruta = `${SITE_URL}/temario/${disciplina}/${capitulo}/`;
+  const articleLd = {
+    '@context': 'https://schema.org',
+    '@type': 'Article',
+    headline: cap.titulo,
+    description: cap.descripcion,
+    url: ruta,
+    inLanguage: 'es',
+    about: nombreDisciplina(disciplina),
+    isPartOf: { '@type': 'WebSite', name: SITE_NAME, url: `${SITE_URL}/` },
+    author: { '@type': 'Organization', name: SITE_NAME },
+    publisher: { '@type': 'Organization', name: SITE_NAME },
+  };
+  const breadcrumbLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Temario', item: `${SITE_URL}/temario/` },
+      {
+        '@type': 'ListItem',
+        position: 2,
+        name: nombreDisciplina(disciplina),
+        item: `${SITE_URL}/temario/${disciplina}/`,
+      },
+      { '@type': 'ListItem', position: 3, name: cap.titulo, item: ruta },
+    ],
+  };
+
   return (
     <div className="lg:grid lg:grid-cols-[230px_1fr] lg:gap-12">
+      <JsonLd data={articleLd} />
+      <JsonLd data={breadcrumbLd} />
       {/* Columna lateral (solo escritorio) */}
       <div className="hidden lg:block">
         <div className="sticky top-24 flex flex-col gap-8">
@@ -84,7 +128,7 @@ export default async function CapituloPage({
       </div>
 
       <article className="min-w-0">
-        <nav className="mb-3 text-sm text-neutro-400">
+        <nav className="mb-3 text-sm text-neutro-500">
           <Link href="/temario/" className="hover:text-rojo-600">
             Temario
           </Link>
@@ -103,7 +147,7 @@ export default async function CapituloPage({
           <details className="group mt-4 rounded-xl border border-neutro-200 lg:hidden">
             <summary className="cursor-pointer list-none px-4 py-3 text-sm font-medium text-neutro-700 marker:content-none">
               En este capítulo
-              <span className="float-right text-neutro-400 transition group-open:rotate-180">
+              <span className="float-right text-neutro-500 transition group-open:rotate-180">
                 ▾
               </span>
             </summary>

@@ -8,6 +8,7 @@ import GrafoConocimiento, {
 
 export const metadata: Metadata = {
   title: 'Mapa',
+  alternates: { canonical: '/grafo/' },
   description:
     'Mapa de conocimiento: los capítulos del temario y sus términos de glosario, de un vistazo.',
 };
@@ -66,7 +67,7 @@ export default function GrafoPage() {
               {cap.titulo}
             </Link>
             {cap.terminos.length > 0 && (
-              <ul className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-sm text-black/55">
+              <ul className="mt-1 flex flex-wrap gap-x-3 gap-y-1 text-sm text-neutro-600">
                 {cap.terminos.map((t) => (
                   <li key={t.id}>
                     <Link href={t.url} className="hover:text-acento">

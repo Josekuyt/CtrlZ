@@ -81,7 +81,7 @@ export default function FichaConcepto({
 
   const contenido = (
     <article className="min-w-0">
-      <nav className="mb-4 text-sm text-neutro-400">
+      <nav className="mb-4 text-sm text-neutro-500">
         <Link href="/glosario/" className="hover:text-rojo-600">
           Glosario
         </Link>
@@ -185,7 +185,7 @@ export default function FichaConcepto({
         </nav>
       )}
 
-      <p className="mt-8 text-sm text-neutro-400">
+      <p className="mt-8 text-sm text-neutro-500">
         ¿Ves una errata o falta algo?{' '}
         <a href={sugerirUrl} target="_blank" rel="noreferrer" className="underline hover:text-rojo-600">
           Sugerir una mejora

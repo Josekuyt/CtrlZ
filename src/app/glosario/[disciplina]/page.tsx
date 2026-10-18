@@ -18,7 +18,10 @@ export async function generateMetadata({
   params: Promise<Params>;
 }): Promise<Metadata> {
   const { disciplina } = await params;
-  return { title: `Glosario · ${nombreDisciplina(disciplina)}` };
+  return {
+    title: `Glosario · ${nombreDisciplina(disciplina)}`,
+    alternates: { canonical: `/glosario/${disciplina}/` },
+  };
 }
 
 export default async function GlosarioDisciplinaPage({
@@ -41,7 +44,7 @@ export default async function GlosarioDisciplinaPage({
 
   return (
     <div>
-      <nav className="mb-2 text-sm text-neutro-400">
+      <nav className="mb-2 text-sm text-neutro-500">
         <Link href="/glosario/" className="hover:text-rojo-600">
           Glosario
         </Link>

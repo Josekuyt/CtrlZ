@@ -118,7 +118,7 @@ export default function VistaGlosario({ items }: { items: ItemGlosario[] }) {
                     onClick={() => setLetra(activo ? 'todo' : l)}
                     className={`flex h-7 items-center justify-center rounded text-sm transition ${
                       activo
-                        ? 'bg-rojo-500 font-medium text-white'
+                        ? 'bg-rojo-600 font-medium text-white'
                         : hay
                           ? 'text-neutro-700 hover:bg-neutro-100'
                           : 'cursor-default text-neutro-300'
@@ -195,7 +195,7 @@ export default function VistaGlosario({ items }: { items: ItemGlosario[] }) {
                         <h3 className="font-semibold text-neutro-950 group-hover:text-rojo-600">
                           <Resaltar texto={c.nombre} consulta={consulta} />
                         </h3>
-                        <span className="shrink-0 rounded bg-neutro-100 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wide text-neutro-500">
+                        <span className="shrink-0 rounded bg-neutro-100 px-2 py-0.5 font-mono text-[10px] uppercase tracking-wide text-neutro-600">
                           {etiquetaCategoria(c.categoria)}
                         </span>
                       </div>
@@ -236,7 +236,7 @@ function NivelOpcion({
       }`}
     >
       <span>{label}</span>
-      <span className={`text-xs ${activo ? 'text-rojo-500' : 'text-neutro-400'}`}>{n}</span>
+      <span className={`text-xs ${activo ? 'text-rojo-600' : 'text-neutro-500'}`}>{n}</span>
     </button>
   );
 }

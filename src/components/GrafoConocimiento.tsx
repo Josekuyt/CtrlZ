@@ -72,7 +72,7 @@ export default function GrafoConocimiento({ centro, capitulos }: Props) {
             y={CY + 26}
             textAnchor="middle"
             dominantBaseline="middle"
-            className="fill-black/45 text-[11px] uppercase tracking-widest"
+            className="fill-neutro-600 text-[11px] uppercase tracking-widest"
           >
             {centro}
           </text>
@@ -130,7 +130,7 @@ export default function GrafoConocimiento({ centro, capitulos }: Props) {
                   y={p.y + (arriba ? -14 : 0) + 15}
                   textAnchor={anchor}
                   dominantBaseline="middle"
-                  className={`fill-black/35 text-[10px] transition-opacity duration-200 ${
+                  className={`fill-neutro-500 text-[10px] transition-opacity duration-200 ${
                     dim ? 'opacity-20' : 'opacity-100'
                   }`}
                 >
@@ -170,13 +170,13 @@ export default function GrafoConocimiento({ centro, capitulos }: Props) {
                 ))}
               </ul>
             ) : (
-              <p className="mt-3 text-sm text-black/50">
+              <p className="mt-3 text-sm text-neutro-600">
                 Aún no hay términos de glosario en este capítulo.
               </p>
             )}
           </div>
         ) : (
-          <div className="rounded-xl border border-dashed border-black/15 p-5 text-sm text-black/50">
+          <div className="rounded-xl border border-dashed border-neutro-300 p-5 text-sm text-neutro-600">
             Pulsa un capítulo para ver sus términos de glosario. Pulsa de nuevo
             para cerrarlo.
           </div>
