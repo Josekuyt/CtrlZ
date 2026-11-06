@@ -47,8 +47,10 @@ export const ConceptoFrontmatter = z.object({
   relaciones: z.array(Relacion).default([]),
   ejemplos: z.array(z.string()).default([]),
   referencias: z.array(Referencia).default([]),
-  // Enlace opcional al apartado del temario que lo explica a fondo.
-  temario: z.string().optional(),
+  // Enlace(s) al apartado del temario que lo explica a fondo. Puede ser
+  // un solo enlace o una lista, para conceptos que se explican en varias
+  // disciplinas (p. ej. «kerning» en Editorial y en Tipografía).
+  temario: z.union([z.string(), z.array(z.string())]).optional(),
 });
 
 /** Concepto completo: frontmatter + explicación (cuerpo MDX en texto). */
@@ -56,6 +58,12 @@ export const Concepto = ConceptoFrontmatter.extend({
   explicacion: z.string().default(''),
 });
 export type Concepto = z.infer<typeof Concepto>;
+
+/** Normaliza el campo `temario` (string | string[] | undefined) a una lista. */
+export function refsTemario(c: { temario?: string | string[] }): string[] {
+  if (!c.temario) return [];
+  return Array.isArray(c.temario) ? c.temario : [c.temario];
+}
 
 /**
  * Fuente de información (se usará con el panel/ingesta — Supabase).

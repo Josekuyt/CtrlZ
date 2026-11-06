@@ -1,7 +1,7 @@
 import { cache } from 'react';
 import { cargarConceptos, listarDisciplinas } from './conceptos';
 import { derivarInversas } from './grafo';
-import type { Concepto } from './schema';
+import { refsTemario, type Concepto } from './schema';
 
 /**
  * Carga única del grafo de conceptos (fichas + relaciones inversas).
@@ -43,18 +43,20 @@ export const terminosPorApartado = cache((): Map<string, TerminoApartado[]> => {
   const re = /^\/temario\/([^/]+)\/([^/]+)\/#(.+)$/;
 
   for (const c of obtenerTodos()) {
-    if (!c.temario) continue;
-    const m = re.exec(c.temario.trim());
-    if (!m) continue;
-    const clave = `${m[1]}/${m[2]}/${m[3]}`;
-    const lista = mapa.get(clave) ?? [];
-    lista.push({
-      id: c.id,
-      nombre: c.nombre,
-      definicion: c.definicion,
-      disciplina: c.disciplina,
-    });
-    mapa.set(clave, lista);
+    // Un concepto puede remitir a varios apartados (varias disciplinas).
+    for (const ref of refsTemario(c)) {
+      const m = re.exec(ref.trim());
+      if (!m) continue;
+      const clave = `${m[1]}/${m[2]}/${m[3]}`;
+      const lista = mapa.get(clave) ?? [];
+      lista.push({
+        id: c.id,
+        nombre: c.nombre,
+        definicion: c.definicion,
+        disciplina: c.disciplina,
+      });
+      mapa.set(clave, lista);
+    }
   }
 
   // Orden alfabético estable dentro de cada apartado.

@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { marked } from 'marked';
-import type { Concepto } from '@/lib/schema';
-import { nombreDisciplina } from '@/lib/temario';
+import { refsTemario, type Concepto } from '@/lib/schema';
+import { nombreDisciplina, obtenerCapitulo } from '@/lib/temario';
 import { etiquetaCategoria } from '@/lib/etiquetas';
 import Relaciones from '@/components/Relaciones';
 
@@ -27,6 +27,21 @@ export default function FichaConcepto({
     encodeURIComponent(
       `Término: ${concepto.nombre}\nURL: /glosario/${concepto.disciplina}/${concepto.id}/\n\nSugerencia:\n`,
     );
+
+  // Apartados del temario donde se explica (puede ser más de uno, en varias
+  // disciplinas: se muestran todos).
+  const dondeRefs = refsTemario(concepto)
+    .map((ref) => {
+      const m = /^\/temario\/([^/]+)\/([^/]+)\//.exec(ref.trim());
+      if (!m) return null;
+      const cap = obtenerCapitulo(m[1], m[2]);
+      return {
+        url: ref,
+        label: nombreDisciplina(m[1]),
+        sub: cap?.titulo ?? etiquetaCategoria(concepto.categoria),
+      };
+    })
+    .filter((x): x is NonNullable<typeof x> => x !== null);
 
   const hayLateral = concepto.relaciones.length > 0 || concepto.referencias.length > 0;
 
@@ -117,16 +132,22 @@ export default function FichaConcepto({
         />
       )}
 
-      {concepto.temario && (
+      {dondeRefs.length > 0 && (
         <div className="mt-6 rounded-xl border border-neutro-200 bg-neutro-50 p-4">
           <p className="eyebrow mb-2">Dónde se explica</p>
-          <Link
-            href={concepto.temario}
-            className="inline-flex items-center gap-1 font-medium text-rojo-600 hover:underline"
-          >
-            {nombreDisciplina(concepto.disciplina)} · {etiquetaCategoria(concepto.categoria)}
-            <span aria-hidden="true">→</span>
-          </Link>
+          <ul className="flex flex-col gap-2">
+            {dondeRefs.map((d) => (
+              <li key={d.url}>
+                <Link
+                  href={d.url}
+                  className="inline-flex items-center gap-1 font-medium text-rojo-600 hover:underline"
+                >
+                  {d.label} · {d.sub}
+                  <span aria-hidden="true">→</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
         </div>
       )}
 
