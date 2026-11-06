@@ -10,6 +10,7 @@ const INDEX = '_index.md';
 /** Nombres legibles de cada disciplina (el slug es la carpeta/ruta). */
 export const NOMBRE_DISCIPLINA: Record<string, string> = {
   editorial: 'Diseño Editorial',
+  tipografia: 'Tipografía',
 };
 
 export function nombreDisciplina(slug: string): string {

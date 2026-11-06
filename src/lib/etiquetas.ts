@@ -16,6 +16,14 @@ const ETIQUETA_CATEGORIA: Record<string, string> = {
   imagen: 'Imagen',
   produccion: 'Producción',
   'publicaciones-periodicas': 'Publicaciones periódicas',
+  // Categorías de Tipografía
+  anatomia: 'Anatomía',
+  clasificacion: 'Clasificación',
+  espaciado: 'Espaciado',
+  digital: 'Tipografía digital',
+  ortotipografia: 'Ortotipografía',
+  jerarquia: 'Jerarquía',
+  medida: 'Medida',
 };
 
 export function etiquetaCategoria(cat: string): string {
